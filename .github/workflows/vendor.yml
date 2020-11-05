@@ -150,3 +150,33 @@ jobs:
         with:
           name: vendor-macos-static
           path: out/install
+
+  build_mingw_mac:
+    name: Build static asset (mingw)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+
+      - uses: actions/checkout@v2
+        with:
+          repository: WebAssembly/binaryen
+
+      - name: mkdir
+        run: mkdir -p out
+
+      - name: cmake
+        run: cmake -S . -B out -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
+
+      - name: build
+        run: cmake --build out --config Release
+
+      - name: install
+        run: cmake --install out --config Release
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: vendor-mingw-static
+          path: out/install
