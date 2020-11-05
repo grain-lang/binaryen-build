@@ -78,3 +78,75 @@ jobs:
         with:
           name: vendor-linux-static
           path: out/install
+
+  build_dyn_mac:
+    name: Build dynamic asset (mac)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+
+      - uses: actions/checkout@v2
+        with:
+          repository: WebAssembly/binaryen
+
+      - name: install ninja
+        run: brew install ninja
+
+      - name: mkdir
+        run: mkdir -p out
+
+      - name: cmake
+        run: cmake -S . -B out -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
+
+      - name: build
+        run: cmake --build out --config Release
+
+      - name: install
+        run: cmake --install out --config Release
+
+      - name: strip
+        run: find out/install/ -type f -perm -u=x -exec strip -x {} +
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: vendor-macos-dyn
+          path: out/install
+
+  build_static_mac:
+    name: Build static asset (mac)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+
+      - uses: actions/checkout@v2
+        with:
+          repository: WebAssembly/binaryen
+
+      - name: install ninja
+        run: brew install ninja
+
+      - name: mkdir
+        run: mkdir -p out
+
+      - name: cmake
+        run: cmake -S . -B out -G Ninja -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
+
+      - name: build
+        run: cmake --build out --config Release
+
+      - name: install
+        run: cmake --install out --config Release
+
+      - name: strip
+        run: find out/install/ -type f -perm -u=x -exec strip -x {} +
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: vendor-macos-static
+          path: out/install
