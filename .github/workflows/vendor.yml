@@ -1,0 +1,44 @@
+name: Build vendor assets
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  build_dyn_linux:
+    name: Build dynamic asset (linux)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+
+      - uses: actions/checkout@v2
+        with:
+          repository: WebAssembly/binaryen
+
+      - name: install ninja
+        run: sudo apt-get install ninja-build
+
+      - name: mkdir
+        run: mkdir -p out
+
+      - name: cmake
+        run: cmake -S . -B out -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
+
+      - name: build
+        run: cmake --build out --config Release
+
+      - name: install
+        run: cmake --install out --config Release
+
+      - name: strip
+        run: find out/install/ -type f -perm -u=x -exec strip -x {} +
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: vendor-linux-dyn
+          path: out
