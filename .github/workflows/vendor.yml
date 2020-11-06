@@ -151,7 +151,7 @@ jobs:
           name: vendor-macos-static
           path: out/install
 
-  build_mingw_mac:
+  build_static_mingw:
     name: Build static asset (mingw)
     runs-on: windows-latest
     steps:
@@ -167,7 +167,7 @@ jobs:
         run: mkdir -p out
 
       - name: cmake
-        run: cmake -S . -B out -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
+        run: cmake -S . -B out -G "MSYS Makefiles" -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
 
       - name: build
         run: cmake --build out --config Release
