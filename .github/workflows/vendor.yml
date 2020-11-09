@@ -151,6 +151,36 @@ jobs:
           name: vendor-macos-static
           path: out/install
 
+  build_dyn_mingw:
+    name: Build dyn asset (mingw)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+
+      - uses: actions/checkout@v2
+        with:
+          repository: WebAssembly/binaryen
+
+      - name: mkdir
+        run: mkdir -p out
+
+      - name: cmake
+        run: cmake -S . -B out -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install -DENABLE_WERROR=OFF
+
+      - name: build
+        run: cmake --build out --config Release
+
+      - name: install
+        run: cmake --install out --config Release
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: vendor-mingw-dyn
+          path: out/install
+
   build_static_mingw:
     name: Build static asset (mingw)
     runs-on: windows-latest
@@ -167,7 +197,7 @@ jobs:
         run: mkdir -p out
 
       - name: cmake
-        run: cmake -S . -B out -G "MSYS Makefiles" -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
+        run: cmake -S . -B out -G "MSYS Makefiles" -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install -DENABLE_WERROR=OFF
 
       - name: build
         run: cmake --build out --config Release
