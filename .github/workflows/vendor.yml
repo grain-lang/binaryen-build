@@ -17,7 +17,7 @@ jobs:
 
       - uses: actions/checkout@v2
         with:
-          repository: WebAssembly/binaryen
+          repository: phated/binaryen
 
       - name: install ninja
         run: sudo apt-get install ninja-build
@@ -53,7 +53,7 @@ jobs:
 
       - uses: actions/checkout@v2
         with:
-          repository: WebAssembly/binaryen
+          repository: phated/binaryen
 
       - name: install ninja
         run: sudo apt-get install ninja-build
@@ -89,7 +89,7 @@ jobs:
 
       - uses: actions/checkout@v2
         with:
-          repository: WebAssembly/binaryen
+          repository: phated/binaryen
 
       - name: install ninja
         run: brew install ninja
@@ -125,7 +125,7 @@ jobs:
 
       - uses: actions/checkout@v2
         with:
-          repository: WebAssembly/binaryen
+          repository: phated/binaryen
 
       - name: install ninja
         run: brew install ninja
@@ -161,7 +161,7 @@ jobs:
 
       - uses: actions/checkout@v2
         with:
-          repository: WebAssembly/binaryen
+          repository: phated/binaryen
 
       - name: mkdir
         run: mkdir -p out
@@ -191,7 +191,7 @@ jobs:
 
       - uses: actions/checkout@v2
         with:
-          repository: WebAssembly/binaryen
+          repository: phated/binaryen
 
       - name: mkdir
         run: mkdir -p out
