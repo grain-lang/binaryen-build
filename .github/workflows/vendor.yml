@@ -41,7 +41,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: vendor-linux-dyn
-          path: out/install
+          path: out
 
   build_static_linux:
     name: Build static asset (linux)
@@ -77,7 +77,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: vendor-linux-static
-          path: out/install
+          path: out
 
   build_dyn_mac:
     name: Build dynamic asset (mac)
@@ -113,7 +113,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: vendor-macos-dyn
-          path: out/install
+          path: out
 
   build_static_mac:
     name: Build static asset (mac)
@@ -149,7 +149,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: vendor-macos-static
-          path: out/install
+          path: out
 
   build_dyn_mingw:
     name: Build dyn asset (mingw)
@@ -179,7 +179,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: vendor-mingw-dyn
-          path: out/install
+          path: out
 
   build_static_mingw:
     name: Build static asset (mingw)
@@ -209,4 +209,4 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: vendor-mingw-static
-          path: out/install
+          path: out
