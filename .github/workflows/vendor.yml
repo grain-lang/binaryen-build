@@ -26,7 +26,7 @@ jobs:
         run: mkdir -p out
 
       - name: cmake
-        run: cmake -S . -B out -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
+        run: cmake -S . -B out -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install -DBUILD_LLVM_DWARF=OFF
 
       - name: build
         run: cmake --build out --config Release
@@ -62,7 +62,7 @@ jobs:
         run: mkdir -p out
 
       - name: cmake
-        run: cmake -S . -B out -G Ninja -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
+        run: cmake -S . -B out -G Ninja -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install -DBUILD_LLVM_DWARF=OFF
 
       - name: build
         run: cmake --build out --config Release
@@ -98,7 +98,7 @@ jobs:
         run: mkdir -p out
 
       - name: cmake
-        run: cmake -S . -B out -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
+        run: cmake -S . -B out -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install -DBUILD_LLVM_DWARF=OFF
 
       - name: build
         run: cmake --build out --config Release
@@ -134,7 +134,7 @@ jobs:
         run: mkdir -p out
 
       - name: cmake
-        run: cmake -S . -B out -G Ninja -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
+        run: cmake -S . -B out -G Ninja -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install -DBUILD_LLVM_DWARF=OFF
 
       - name: build
         run: cmake --build out --config Release
@@ -167,7 +167,7 @@ jobs:
         run: mkdir -p out
 
       - name: cmake
-        run: cmake -S . -B out -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install -DENABLE_WERROR=OFF
+        run: cmake -S . -B out -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install -DBUILD_LLVM_DWARF=OFF -DENABLE_WERROR=OFF
 
       - name: build
         run: cmake --build out --config Release
@@ -197,7 +197,7 @@ jobs:
         run: mkdir -p out
 
       - name: cmake
-        run: cmake -S . -B out -G "MSYS Makefiles" -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install -DENABLE_WERROR=OFF
+        run: cmake -S . -B out -G "MSYS Makefiles" -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install -DBUILD_LLVM_DWARF=OFF -DENABLE_WERROR=OFF
 
       - name: build
         run: cmake --build out --config Release
