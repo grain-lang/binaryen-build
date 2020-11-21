@@ -18,6 +18,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: phated/binaryen
+          ref: version_95.mingw
 
       - name: install ninja
         run: sudo apt-get install ninja-build
@@ -26,7 +27,7 @@ jobs:
         run: mkdir -p out
 
       - name: cmake
-        run: cmake -S . -B out -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install -DBUILD_LLVM_DWARF=OFF
+        run: cmake -S . -B out -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
 
       - name: build
         run: cmake --build out --config Release
@@ -38,10 +39,19 @@ jobs:
         run: find out/install/ -type f -perm -u=x -exec strip -x {} +
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
-          name: vendor-linux-dyn
-          path: out
+          if-no-files-found: error
+          name: linux
+          path: out/lib/*.so
+
+      # Only create vendor copy of headers
+      - name: Upload headers
+        uses: actions/upload-artifact@v2
+        with:
+          if-no-files-found: error
+          name: headers
+          path: out/include/*.h
 
   build_static_linux:
     name: Build static asset (linux)
@@ -54,6 +64,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: phated/binaryen
+          ref: version_95.mingw
 
       - name: install ninja
         run: sudo apt-get install ninja-build
@@ -62,7 +73,7 @@ jobs:
         run: mkdir -p out
 
       - name: cmake
-        run: cmake -S . -B out -G Ninja -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install -DBUILD_LLVM_DWARF=OFF
+        run: cmake -S . -B out -G Ninja -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
 
       - name: build
         run: cmake --build out --config Release
@@ -74,10 +85,11 @@ jobs:
         run: find out/install/ -type f -perm -u=x -exec strip -x {} +
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
-          name: vendor-linux-static
-          path: out
+          if-no-files-found: error
+          name: linux
+          path: out/lib/*.a
 
   build_dyn_mac:
     name: Build dynamic asset (mac)
@@ -90,6 +102,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: phated/binaryen
+          ref: version_95.mingw
 
       - name: install ninja
         run: brew install ninja
@@ -98,7 +111,7 @@ jobs:
         run: mkdir -p out
 
       - name: cmake
-        run: cmake -S . -B out -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install -DBUILD_LLVM_DWARF=OFF
+        run: cmake -S . -B out -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
 
       - name: build
         run: cmake --build out --config Release
@@ -110,10 +123,11 @@ jobs:
         run: find out/install/ -type f -perm -u=x -exec strip -x {} +
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
-          name: vendor-macos-dyn
-          path: out
+          if-no-files-found: error
+          name: macosx
+          path: out/lib/*.dylib
 
   build_static_mac:
     name: Build static asset (mac)
@@ -126,6 +140,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: phated/binaryen
+          ref: version_95.mingw
 
       - name: install ninja
         run: brew install ninja
@@ -134,7 +149,7 @@ jobs:
         run: mkdir -p out
 
       - name: cmake
-        run: cmake -S . -B out -G Ninja -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install -DBUILD_LLVM_DWARF=OFF
+        run: cmake -S . -B out -G Ninja -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
 
       - name: build
         run: cmake --build out --config Release
@@ -146,10 +161,11 @@ jobs:
         run: find out/install/ -type f -perm -u=x -exec strip -x {} +
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
-          name: vendor-macos-static
-          path: out
+          if-no-files-found: error
+          name: macosx
+          path: out/lib/*.a
 
   build_dyn_mingw:
     name: Build dyn asset (mingw)
@@ -162,12 +178,13 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: phated/binaryen
+          ref: version_95.mingw
 
       - name: mkdir
         run: mkdir -p out
 
       - name: cmake
-        run: cmake -S . -B out -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install -DBUILD_LLVM_DWARF=OFF -DENABLE_WERROR=OFF
+        run: cmake -S . -B out -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install -DENABLE_WERROR=OFF
 
       - name: build
         run: cmake --build out --config Release
@@ -176,10 +193,11 @@ jobs:
         run: cmake --install out --config Release
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
-          name: vendor-mingw-dyn
-          path: out
+          if-no-files-found: error
+          name: mingw64
+          path: out/bin/*.dll
 
   build_static_mingw:
     name: Build static asset (mingw)
@@ -192,12 +210,13 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: phated/binaryen
+          ref: version_95.mingw
 
       - name: mkdir
         run: mkdir -p out
 
       - name: cmake
-        run: cmake -S . -B out -G "MSYS Makefiles" -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install -DBUILD_LLVM_DWARF=OFF -DENABLE_WERROR=OFF
+        run: cmake -S . -B out -G "MSYS Makefiles" -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
 
       - name: build
         run: cmake --build out --config Release
@@ -206,7 +225,8 @@ jobs:
         run: cmake --install out --config Release
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
-          name: vendor-mingw-static
-          path: out
+          if-no-files-found: error
+          name: mingw64
+          path: out/lib/*.a
