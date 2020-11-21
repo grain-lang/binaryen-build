@@ -43,7 +43,7 @@ jobs:
         with:
           if-no-files-found: error
           name: linux
-          path: out/lib/*.so
+          path: out/install/lib/*.so
 
       # Only create vendor copy of headers
       - name: Upload headers
@@ -51,7 +51,7 @@ jobs:
         with:
           if-no-files-found: error
           name: headers
-          path: out/include/*.h
+          path: out/install/include/*.h
 
   build_static_linux:
     name: Build static asset (linux)
@@ -89,7 +89,7 @@ jobs:
         with:
           if-no-files-found: error
           name: linux
-          path: out/lib/*.a
+          path: out/install/lib/*.a
 
   build_dyn_mac:
     name: Build dynamic asset (mac)
@@ -127,7 +127,7 @@ jobs:
         with:
           if-no-files-found: error
           name: macosx
-          path: out/lib/*.dylib
+          path: out/install/lib/*.dylib
 
   build_static_mac:
     name: Build static asset (mac)
@@ -165,7 +165,7 @@ jobs:
         with:
           if-no-files-found: error
           name: macosx
-          path: out/lib/*.a
+          path: out/install/lib/*.a
 
   build_dyn_mingw:
     name: Build dyn asset (mingw)
@@ -197,7 +197,7 @@ jobs:
         with:
           if-no-files-found: error
           name: mingw64
-          path: out/bin/*.dll
+          path: out/install/bin/*.dll
 
   build_static_mingw:
     name: Build static asset (mingw)
@@ -229,4 +229,4 @@ jobs:
         with:
           if-no-files-found: error
           name: mingw64
-          path: out/lib/*.a
+          path: out/install/lib/*.a
