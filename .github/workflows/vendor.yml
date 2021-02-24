@@ -248,7 +248,7 @@ jobs:
 
       - run: echo "{\"presets\":[\"@babel/preset-env\"]}" > babel.config.json
 
-      - run: babel index.js --out-file index.es5.js
+      - run: npx babel index.js --out-file index.es5.js
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
