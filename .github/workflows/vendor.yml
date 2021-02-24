@@ -230,3 +230,29 @@ jobs:
           if-no-files-found: error
           name: mingw64
           path: out/install/lib/*.a
+
+  build_js:
+    name: Build JS for JSOO compatibility
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: AssemblyScript/binaryen.js
+          ref: v98.0.0
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - run: npm i @babel/core @babel/cli @babel/preset-env
+
+      - run: echo "{\"presets\":[\"@babel/preset-env\"]}" > babel.config.json
+
+      - run: babel index.js --out-file index.es5.js
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          if-no-files-found: error
+          name: js
+          path: index.es5.js
