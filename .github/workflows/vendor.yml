@@ -248,7 +248,7 @@ jobs:
 
       - run: echo "{\"presets\":[\"@babel/preset-env\"]}" > babel.config.json
 
-      - run: npx babel index.js --out-file index.es5.js
+      - run: NODE_OPTIONS=--max_old_space_size=4096 npx babel index.js --out-file index.es5.js
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
