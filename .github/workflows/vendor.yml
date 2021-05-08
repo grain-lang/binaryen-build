@@ -10,6 +10,9 @@ jobs:
   build_dyn_linux:
     name: Build dynamic asset (linux)
     runs-on: ubuntu-latest
+    env:
+      CC: gcc-7
+      CXX: g++-7
     steps:
       - uses: actions/setup-python@v1
         with:
@@ -19,6 +22,9 @@ jobs:
         with:
           repository: webassembly/binaryen
           ref: version_101
+
+      - name: Install old GCC
+        run: sudo apt-get install g++-7
 
       - name: install ninja
         run: sudo apt-get install ninja-build
@@ -56,6 +62,9 @@ jobs:
   build_static_linux:
     name: Build static asset (linux)
     runs-on: ubuntu-latest
+    env:
+      CC: gcc-7
+      CXX: g++-7
     steps:
       - uses: actions/setup-python@v1
         with:
@@ -65,6 +74,9 @@ jobs:
         with:
           repository: webassembly/binaryen
           ref: version_101
+
+      - name: Install old GCC
+        run: sudo apt-get install g++-7
 
       - name: install ninja
         run: sudo apt-get install ninja-build
