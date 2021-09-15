@@ -2,8 +2,6 @@ name: Build vendor assets
 
 on:
   push:
-    branches:
-      - main
 
 jobs:
 
