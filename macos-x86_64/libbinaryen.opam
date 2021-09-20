@@ -1,0 +1,16 @@
+opam-version: "2.0"
+synopsis: "libbinaryen packaged for opam"
+maintainer: "oscar@grain-lang.org"
+author: "Oscar Spencer"
+license: " Apache-2.0"
+homepage: "https://github.com/grain-lang/binaryen-build"
+dev-repo: "git+https://github.com/grain-lang/binaryen-build.git"
+bug-reports: "https://github.com/grain-lang/binaryen-build/issues"
+build: [
+  [ "dune" "subst" ] {dev}
+  [ "dune" "build" "-p" name "-j" jobs ]
+]
+depends: [
+  "dune" {>= "2.9.1"}
+]
+available: arch = "x86_64" & os = "macos"

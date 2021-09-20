@@ -1,0 +1,15 @@
+(library
+ (name libbinaryen_c)
+ (public_name libbinaryen)
+ (foreign_archives binaryen)
+ (install_c_headers include/binaryen-c include/wasm-delegations))
+
+(rule
+ (target libbinaryen.a)
+ (action
+  (copy lib/libbinaryen.a libbinaryen.a)))
+
+(rule
+ (target dllbinaryen.so)
+ (action
+  (copy lib/libbinaryen.dylib dllbinaryen.so)))

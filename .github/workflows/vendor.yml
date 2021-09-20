@@ -101,7 +101,7 @@ jobs:
           name: linux
           path: out/install/lib/*.a
 
-  build_dyn_mac:
+  build_mac:
     name: Build dynamic asset (mac)
     runs-on: macos-latest
     steps:
@@ -110,72 +110,42 @@ jobs:
           python-version: '3.x'
 
       - uses: actions/checkout@v2
-        with:
-          repository: webassembly/binaryen
-          ref: version_101
-
-      - name: install ninja
-        run: brew install ninja
-
-      - name: mkdir
-        run: mkdir -p out
-
-      - name: cmake
-        run: cmake -S . -B out -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
-
-      - name: build
-        run: cmake --build out --config Release
-
-      - name: install
-        run: cmake --install out --config Release
-
-      - name: strip
-        run: find out/install/ -type f -perm -u=x -exec strip -x {} +
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          if-no-files-found: error
-          name: macosx
-          path: out/install/lib/*.dylib
-
-  build_static_mac:
-    name: Build static asset (mac)
-    runs-on: macos-latest
-    steps:
-      - uses: actions/setup-python@v1
-        with:
-          python-version: '3.x'
 
       - uses: actions/checkout@v2
         with:
           repository: webassembly/binaryen
           ref: version_101
+          path: binaryen
 
       - name: install ninja
         run: brew install ninja
 
-      - name: mkdir
-        run: mkdir -p out
+      - name: Build dynamic library
+        run: |
+          cmake -S binaryen -B macos-x86_64 -G Ninja -DBUILD_STATIC_LIB=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=macos-x86_64
+          cmake --build macos-x86_64 --config Release
+          cmake --install macos-x86_64 --config Release
 
-      - name: cmake
-        run: cmake -S . -B out -G Ninja -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=out/install
-
-      - name: build
-        run: cmake --build out --config Release
-
-      - name: install
-        run: cmake --install out --config Release
+      - name: Build static library
+        run: |
+          cmake -S binaryen -B macos-x86_64 -G Ninja -DBUILD_STATIC_LIB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=macos-x86_64
+          cmake --build macos-x86_64 --config Release
+          cmake --install macos-x86_64 --config Release
 
       - name: strip
-        run: find out/install/ -type f -perm -u=x -exec strip -x {} +
+        run: find macos-x86_64/ -type f -perm -u=x -exec strip -x {} +
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           if-no-files-found: error
           name: macosx
-          path: out/install/lib/*.a
+          path: |
+            macos-x86_64/lib
+            macos-x86_64/include
+            macos-x86_64/dune-project
+            macos-x86_64/dune
+            macos-x86_64/libbinaryen.opam
 
   build_dyn_mingw:
     name: Build dyn asset (mingw)
